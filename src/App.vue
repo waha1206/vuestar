@@ -1,5 +1,13 @@
 <template>
   <div id="app">
+    <div>
+      <router-link to="/home">Home</router-link> |
+      <router-link to="/about">About</router-link> |
+      <router-link to="/user">User</router-link>
+    </div>
+    <div>
+      <router-view />
+    </div>
     <table
       class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
     >
@@ -73,8 +81,8 @@ export default {
         this.userList = res.data;
         // this.userListt.push(...res.data);
       })
-      .catch(e => {
-        Message.info("加載失敗" + e);// eslint-disable-line
+      .catch(() => {
+        ElementUI.Message.info("加載失敗" + e);// eslint-disable-line
       }); // eslint-disable-line
   },
   components: {
