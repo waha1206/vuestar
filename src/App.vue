@@ -27,7 +27,9 @@
             <td>{{ item.nickname }}</td>
             <td>{{ item.email }}</td>
             <td>{{ item.created_time }}</td>
-            <td><a @click="delUser(item.nickname)" href="#">刪除</a></td>
+            <td>
+              <a @click="delUser(item.email)" href="javascript:">刪除</a>
+            </td>
           </tr>
         </template>
 
@@ -61,6 +63,7 @@ import axios from "axios";
 
 import ElementUI from "element-ui";
 import "element-ui/lib/theme-chalk/index.css";
+import { apiUserDelete } from "./api.js";
 
 export default {
   name: "app",
@@ -70,8 +73,25 @@ export default {
     };
   },
   methods: {
-    delUser(id) {
-      console.log(id);
+    delUser(email) {
+      // console.log(email);
+      // axios.post("http://127.0.0.1:5000/admin/test2").then(res => {
+      //   let delIndex = this.userList.findIndex(item => item.email === email);
+      //   console.log(delIndex);
+      // });
+
+      ElementUI.MessageBox.confirm("是否真的要刪除嗎？", "刪除提醒")
+        .then(() => {
+          axios
+            .post("api/admin/test2", { email: email })
+            .then(res => console.log(res.data))
+            .catch(err => {
+              ElementUI.Message.info("刪除失敗！");
+            });
+        })
+        .catch(() => {
+          ElementUI.Message.info("取消刪除了！");
+        });
     }
   },
   created() {
@@ -81,8 +101,10 @@ export default {
         this.userList = res.data;
         // this.userListt.push(...res.data);
       })
-      .catch(() => {
-        ElementUI.Message.info("加載失敗" + e);// eslint-disable-line
+      .catch(err => {
+        this.nextTick(function(err) {
+          ElementUI.Message.info("加載失敗" + err);
+        });
       }); // eslint-disable-line
   },
   components: {
