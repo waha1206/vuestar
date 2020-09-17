@@ -74,17 +74,19 @@ export default {
   },
   methods: {
     delUser(email) {
-      // console.log(email);
+      console.log(email);
       // axios.post("http://127.0.0.1:5000/admin/test2").then(res => {
       //   let delIndex = this.userList.findIndex(item => item.email === email);
       //   console.log(delIndex);
       // });
-
       ElementUI.MessageBox.confirm("是否真的要刪除嗎？", "刪除提醒")
         .then(() => {
           axios
             .post("api/admin/test2", { email: email })
-            .then(res => console.log(res.data))
+            .then(res => {
+              console.log(res.data);
+              ElementUI.Message.info("刪除成功！");
+            })
             .catch(err => {
               ElementUI.Message.info("刪除失敗！");
             });
