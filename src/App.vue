@@ -1,10 +1,13 @@
 <template>
   <div id="app">
     <div>
-      <router-link to="/home">Home</router-link> |
+      <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> |
       <router-link to="/user">User</router-link>
     </div>
+    <hr />
+    <el-button type="success">添加用戶</el-button>
+    <hr />
     <div>
       <router-view />
     </div>
@@ -40,20 +43,6 @@
         </template>
       </tbody>
     </table>
-    <div class="block">
-      <span class="demonstration">默认</span>
-      <el-slider v-model="value1"></el-slider>
-    </div>
-    <img src="./assets/logo.png" />
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
-    </div>
-    <HelloWorld msg="Welcome to Your Vue.js App" />
   </div>
 </template>
 
@@ -82,9 +71,14 @@ export default {
       ElementUI.MessageBox.confirm("是否真的要刪除嗎？", "刪除提醒")
         .then(() => {
           axios
-            .post("api/admin/test2", { email: email })
+            .post("api/admin/delete", { email: email })
             .then(res => {
-              console.log(res.data);
+              let delIndex = this.userList.findIndex(
+                item => item.email === email
+              );
+              if (delIndex >= 0) {
+                this.userList.splice(delIndex, 1);
+              }
               ElementUI.Message.info("刪除成功！");
             })
             .catch(err => {
@@ -110,7 +104,7 @@ export default {
       }); // eslint-disable-line
   },
   components: {
-    HelloWorld
+    // HelloWorld
   }
 };
 </script>
@@ -122,6 +116,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+  margin-top: 10px;
 }
 </style>
